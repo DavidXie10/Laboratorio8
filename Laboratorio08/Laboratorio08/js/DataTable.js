@@ -5,13 +5,22 @@ class DataTable {
         this.context = context;
     }
 
-    appendTableCellsToRow(row, cells) {
+    appendTableCellsToRow(row, cells, columnType) {
         for (let index = 0; index < cells.length; ++index) {
-            let cellElement = document.createElement("td");
+            let cellElement = document.createElement(columnType);
             let cellText = document.createTextNode(cells[index]);
             cellElement.appendChild(cellText);
             row.appendChild(cellElement);
         }
+    }
+
+    appendTableHeader(table) {
+        let headerValues = ["Id", "Name", "Quantity", "Price"];
+        let tableHead = document.createElement("thead");
+        let headerRow = document.createElement("tr");
+        this.appendTableCellsToRow(headerRow, headerValues, "th");
+        tableHead.appendChild(headerRow);
+        table.appendChild(tableHead);
     }
 
     fillContext() {
@@ -22,17 +31,15 @@ class DataTable {
         .then(data => {
             let table = document.createElement("table");
             let tableBody = document.createElement("tbody");
-            let headerRow = document.createElement("tr");
-            this.appendTableCellsToRow(headerRow, ["Id", "Name", "Quantity", "Price"]);
-            tableBody.appendChild(headerRow);
-            
+            this.appendTableHeader(table);
+
             for (const object of data) {
                 let row = document.createElement("tr");
                 let cells = []
                 for (const key in object) {
                     cells.push(`${object[key]}`);
                 }
-                this.appendTableCellsToRow(row, cells);
+                this.appendTableCellsToRow(row, cells, "td");
                 tableBody.append(row);
             }
             table.setAttribute("id", "productsTable");

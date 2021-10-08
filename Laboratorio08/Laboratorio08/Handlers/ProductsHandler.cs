@@ -13,8 +13,7 @@ namespace Laboratorio08.Handlers {
         private string connectionRoute;
 
         public ProductsHandler() {
-            connectionRoute =
-           ConfigurationManager.ConnectionStrings["Lab8Connection"].ToString();
+            connectionRoute = ConfigurationManager.ConnectionStrings["Lab8Connection"].ToString();
             connection = new SqlConnection(connectionRoute);
         }
 
@@ -29,18 +28,8 @@ namespace Laboratorio08.Handlers {
         }
 
         public IEnumerable<Products> GetAll() {
-            /*
-             * IEnumerable es una estructura similar a List, la cual se utilizó en
-            laboratorios previos
-             * Llene esta lista con el resultado de su consulta.
-             */
             IEnumerable <Products> productsList = new List<Products>();
 
-            /*
-            * Agregue la lógica y elementos necesarios para que este método retorne
-            todos los productos
-            * Es decir, debe realizar un SELECT * FROM Products
-             */
             string query = "SELECT * FROM Products";
             DataTable resultingTable = CreateTableFromQuery(query);
             foreach (DataRow column in resultingTable.Rows) {
@@ -50,7 +39,8 @@ namespace Laboratorio08.Handlers {
                         Quantity = Convert.ToInt32(column["quantity"]),
                         Id = Convert.ToInt32(column["Id"]),
                         Price = Convert.ToDouble(column["price"])
-                    });
+                    }
+                );
             }
 
             return productsList;
